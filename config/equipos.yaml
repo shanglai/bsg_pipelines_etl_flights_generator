@@ -1,0 +1,6 @@
+# Equipos del modo servidor. `sim equipos aplicar` crea sus credenciales (idempotente).
+limite_por_minuto: 60
+equipos: []
+#  - nombre: equipo01
+#  - nombre: equipo02
+#    limite_por_minuto: 90

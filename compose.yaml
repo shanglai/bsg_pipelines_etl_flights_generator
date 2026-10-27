@@ -1,0 +1,105 @@
+# Modo LOCAL (alumno): docker compose up -d
+# Modo SERVIDOR: docker compose -f compose.yaml -f compose.servidor.yaml up -d
+name: simulador-aerolineas
+
+x-sim-entorno: &sim-entorno
+  SIM_MODO: ${SIM_MODO:-local}
+  SIM_FACTOR: ${SIM_FACTOR:-60}
+  SIM_ERRORES: ${SIM_ERRORES:-activos}
+  SIM_CONFIG_EXTRA: ${SIM_CONFIG_EXTRA:-}
+  MYSQL_HOST: mysql
+  MYSQL_PUERTO: "3306"
+  MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Define MYSQL_ROOT_PASSWORD en .env}
+  MYSQL_TLS: "0"
+  TOKEN_INSTRUCTOR: ${TOKEN_INSTRUCTOR:?Define TOKEN_INSTRUCTOR en .env}
+  API_LLAVES: ${ALUMNO_SFTP_USUARIO:-alumno}:${ALUMNO_API_LLAVE:?Define ALUMNO_API_LLAVE en .env}
+  ALUMNO_MYSQL_USUARIO: ${ALUMNO_MYSQL_USUARIO:-alumno}
+  ALUMNO_MYSQL_CONTRASENA: ${ALUMNO_MYSQL_CONTRASENA:?Define ALUMNO_MYSQL_CONTRASENA en .env}
+  SFTP_USUARIOS: ${ALUMNO_SFTP_USUARIO:-alumno}
+  SFTP_DIR: /datos/sftp
+
+services:
+  mysql:
+    image: ${IMAGEN_MYSQL:-mysql:8.4}
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    # Opciones por línea de comandos (no por my.cnf: en Windows un archivo montado se ignora por permisos).
+    command:
+      - --innodb-buffer-pool-size=256M
+      - --innodb-redo-log-capacity=134217728
+      - --innodb-log-buffer-size=8M
+      - --performance-schema=OFF
+      - --mysqlx=OFF
+      - --max-connections=120
+      - --table-open-cache=400
+      - --tmp-table-size=16M
+      - --max-heap-table-size=16M
+      - --skip-name-resolve
+      - --server-id=1
+      - --log-bin=binlog
+      - --binlog-expire-logs-seconds=259200
+      - --binlog-ignore-db=simulador
+      - --gtid-mode=ON
+      - --enforce-gtid-consistency=ON
+      - --character-set-server=utf8mb4
+    ports:
+      - "${MYSQL_PUERTO:-3307}:3306"
+    volumes:
+      - mysql-datos:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  generador:
+    image: bsg/simulador-aerolineas:1.0
+    build:
+      context: .
+      args:
+        IMAGEN_PYTHON: ${IMAGEN_PYTHON:-python:3.11-slim}
+    command: ["generador"]
+    restart: unless-stopped
+    environment: *sim-entorno
+    depends_on:
+      mysql: {condition: service_healthy}
+    volumes:
+      - sftp-datos:/datos/sftp
+      - sim-secretos:/datos/secretos
+      - sftp-conf:/datos/sftp_conf
+      - ./entregas:/entregas
+      - ./config/equipos.yaml:/config/equipos.yaml:ro
+
+  api:
+    image: bsg/simulador-aerolineas:1.0
+    command: ["api"]
+    restart: unless-stopped
+    environment: *sim-entorno
+    depends_on:
+      mysql: {condition: service_healthy}
+      generador: {condition: service_started}
+    ports:
+      - "${API_PUERTO:-8000}:8000"
+
+  sftp:
+    build:
+      context: ./sftp
+      args:
+        IMAGEN_SFTP: ${IMAGEN_SFTP:-atmoz/sftp:alpine}
+    image: bsg/simulador-sftp:1.0
+    restart: unless-stopped
+    command: ["${ALUMNO_SFTP_USUARIO:-alumno}:${ALUMNO_SFTP_CONTRASENA:?Define ALUMNO_SFTP_CONTRASENA en .env}:1001"]
+    ports:
+      - "${SFTP_PUERTO:-2222}:22"
+    volumes:
+      - sftp-datos:/home
+      - sftp-llaves:/llaves
+
+volumes:
+  mysql-datos:
+  sftp-datos:
+  sftp-llaves:
+  sftp-conf:
+  sim-secretos:

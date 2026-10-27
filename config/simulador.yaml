@@ -1,0 +1,68 @@
+# Configuración del simulador. Los valores de `modos.<modo>` se sobreponen a la base.
+# El modo se elige con la variable de entorno SIM_MODO (local | servidor).
+semilla: 987654
+
+reloj:
+  # Momento simulado en que arranca el mundo (UTC). "ahora" = hora real redondeada al minuto.
+  inicio_simulado: "2026-11-02T00:00:00Z"
+  # 1 segundo real = `factor` segundos simulados. 60 => 1 minuto real = 1 hora simulada.
+  factor: 60
+  # Horas simuladas de historia que ya "ocurrieron" al arrancar: el mundo empieza en
+  # inicio_simulado - precarga_horas y ese atraso se publica de golpe al inicio.
+  # Sirve para que desde el primer minuto haya vuelos en todos los estados.
+  precarga_horas: 48
+
+volumen:
+  # Fracción de los vuelos programados (datos/rutas.csv) que opera cada día (0 a 1).
+  fraccion_vuelos: 1.0
+  asientos_por_vuelo: 180   # filas 1-30, letras A-F (no se cambia: es el mapa común)
+
+latencia:          # segundos REALES
+  api: {min: 2, max: 10, tarde_min: 120, tarde_max: 300}
+  mysql: {lote_min: 30, lote_max: 90, larga_min: 180, larga_max: 300}
+  sftp: {cada: 600, tarde_min: 1800, tarde_max: 3600, correccion_min: 600, correccion_max: 2400}
+
+retencion:         # en tiempo REAL
+  api_horas: 72
+  sftp_dias: 7
+
+api:
+  limite_por_minuto: 60
+  pagina_max: 500
+  pagina_omision: 100
+
+# Momentos programados, medidos en HORAS SIMULADAS desde el inicio del reloj.
+programado:
+  sftp_columna_nueva_desde_hora: 72
+  incidentes:
+    - {tipo: cambio_esquema_api, en_hora_simulada: 96, parametros: {convivencia_horas_simuladas: 12}}
+
+errores:
+  activos: true      # false = modo "limpio": ningún error de datos ni llegada tarde
+  api:
+    error_5xx: 0.02            # por petición
+    duplicado: 0.01            # por evento publicado
+    offset_local: 0.30         # por evento: marca de tiempo con -06:00 en vez de Z
+    tarde: 0.03                # por evento: llega 2 a 5 minutos tarde
+  sftp:
+    truncado: 0.03             # por archivo: queda truncado con su nombre final
+    reenvio_corregido: 0.05    # por archivo: primera versión con filas faltantes
+    windows_1252: 0.15         # por archivo
+    punto_y_coma: 0.15         # por archivo
+    tarde: 0.05                # por ventana: los dos archivos llegan 30 a 60 min tarde
+  mysql:
+    transaccion_larga: 0.08    # por lote confirmado
+    correccion_manual: 0.03    # por cierre de vuelo: cambia estado sin mover actualizado_en
+  negocio:                     # por vuelo
+    asiento_doble: 0.03
+    asiento_inexistente: 0.02
+    asignacion_vuelo_no_abierto: 0.03
+    origen_igual_destino: 0.005
+    ruta_fuera_de_red: 0.005
+
+modos:
+  local: {}
+  servidor:
+    reloj:
+      inicio_simulado: ahora
+      factor: 1

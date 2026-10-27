@@ -1,0 +1,32 @@
+# Aerolíneas FICTICIAS del simulador. Los nombres y los códigos de dos letras se
+# inventaron para el curso; si un código coincide con una asignación real de IATA,
+# es casualidad y no representa a ninguna empresa.
+aerolineas:
+  - codigo: CQ
+    letra: A
+    nombre: Aerolíneas Colibrí
+    canal: api
+    hubs: [MEX, CUN]
+    tasa_cancelacion: 0.03
+    aeropuertos: [MEX, CUN, GDL, MTY, MID, OAX, VER, VSA, HUX, BJX, QRO, TIJ, CZM,
+                  MIA, JFK, ORD, ATL, BOG, PTY, HAV, SDQ, SJO]
+    # Conexiones del segundo hub (además de su conexión con el primero).
+    rutas_segundo_hub: [GDL, MTY, MID, MIA, JFK, ATL, BOG, PTY, HAV, SDQ, SJO, VSA]
+  - codigo: JG
+    letra: B
+    nombre: Jaguar Air
+    canal: sftp
+    hubs: [MTY]
+    tasa_cancelacion: 0.04
+    aeropuertos: [MTY, MEX, GDL, CUN, TRC, CJS, TAM, QRO, BJX, HMO, CUL, IAH, DFW,
+                  ORD, LAS, MIA, PVR, SJD]
+    rutas_segundo_hub: []
+  - codigo: XJ
+    letra: C
+    nombre: Aerovías Ajolote
+    canal: mysql
+    hubs: [TIJ, GDL]
+    tasa_cancelacion: 0.02
+    aeropuertos: [TIJ, GDL, MEX, CUL, HMO, MZT, SJD, PVR, ZIH, CUN, MTY, LAX, SFO,
+                  LAS, PHX, DFW, LIM, SCL, GRU, BOG]
+    rutas_segundo_hub: [MEX, CUN, MTY, PVR, ZIH, MZT, CUL, LIM, BOG]

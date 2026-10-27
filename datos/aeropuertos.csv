@@ -1,0 +1,41 @@
+iata,icao,nombre,ciudad,pais,zona_horaria,latitud,longitud
+MEX,MMMX,Aeropuerto Internacional Benito Juárez,Ciudad de México,México,America/Mexico_City,19.4363,-99.0721
+GDL,MMGL,Aeropuerto Internacional Miguel Hidalgo y Costilla,Guadalajara,México,America/Mexico_City,20.5218,-103.3112
+MTY,MMMY,Aeropuerto Internacional General Mariano Escobedo,Monterrey,México,America/Monterrey,25.7785,-100.1069
+CUN,MMUN,Aeropuerto Internacional de Cancún,Cancún,México,America/Cancun,21.0365,-86.8771
+TIJ,MMTJ,Aeropuerto Internacional General Abelardo L. Rodríguez,Tijuana,México,America/Tijuana,32.5411,-116.9700
+SJD,MMSD,Aeropuerto Internacional de Los Cabos,San José del Cabo,México,America/Mazatlan,23.1518,-109.7215
+PVR,MMPR,Aeropuerto Internacional Gustavo Díaz Ordaz,Puerto Vallarta,México,America/Mexico_City,20.6801,-105.2542
+MID,MMMD,Aeropuerto Internacional Manuel Crescencio Rejón,Mérida,México,America/Merida,20.9370,-89.6577
+BJX,MMLO,Aeropuerto Internacional del Bajío,León,México,America/Mexico_City,20.9935,-101.4809
+CUL,MMCL,Aeropuerto Internacional Federal de Culiacán,Culiacán,México,America/Mazatlan,24.7645,-107.4747
+HMO,MMHO,Aeropuerto Internacional General Ignacio L. Pesqueira,Hermosillo,México,America/Hermosillo,29.0959,-111.0480
+CJS,MMCS,Aeropuerto Internacional Abraham González,Ciudad Juárez,México,America/Ciudad_Juarez,31.6361,-106.4289
+OAX,MMOX,Aeropuerto Internacional de Oaxaca,Oaxaca,México,America/Mexico_City,16.9999,-96.7266
+VER,MMVR,Aeropuerto Internacional General Heriberto Jara,Veracruz,México,America/Mexico_City,19.1459,-96.1873
+VSA,MMVA,Aeropuerto Internacional Carlos Rovirosa Pérez,Villahermosa,México,America/Mexico_City,17.9970,-92.8174
+TRC,MMTC,Aeropuerto Internacional Francisco Sarabia,Torreón,México,America/Monterrey,25.5683,-103.4107
+CZM,MMCZ,Aeropuerto Internacional de Cozumel,Cozumel,México,America/Cancun,20.5224,-86.9256
+HUX,MMBT,Aeropuerto Internacional de Bahías de Huatulco,Huatulco,México,America/Mexico_City,15.7753,-96.2626
+ZIH,MMZH,Aeropuerto Internacional de Ixtapa-Zihuatanejo,Zihuatanejo,México,America/Mexico_City,17.6016,-101.4606
+MZT,MMMZ,Aeropuerto Internacional General Rafael Buelna,Mazatlán,México,America/Mazatlan,23.1614,-106.2660
+QRO,MMQT,Aeropuerto Intercontinental de Querétaro,Querétaro,México,America/Mexico_City,20.6173,-100.1857
+TAM,MMTM,Aeropuerto Internacional General Francisco Javier Mina,Tampico,México,America/Monterrey,22.2964,-97.8659
+LAX,KLAX,Los Angeles International Airport,Los Ángeles,Estados Unidos,America/Los_Angeles,33.9416,-118.4085
+SFO,KSFO,San Francisco International Airport,San Francisco,Estados Unidos,America/Los_Angeles,37.6213,-122.3790
+LAS,KLAS,Harry Reid International Airport,Las Vegas,Estados Unidos,America/Los_Angeles,36.0840,-115.1537
+PHX,KPHX,Phoenix Sky Harbor International Airport,Phoenix,Estados Unidos,America/Phoenix,33.4342,-112.0116
+DFW,KDFW,Dallas/Fort Worth International Airport,Dallas,Estados Unidos,America/Chicago,32.8998,-97.0403
+IAH,KIAH,George Bush Intercontinental Airport,Houston,Estados Unidos,America/Chicago,29.9902,-95.3368
+ORD,KORD,O'Hare International Airport,Chicago,Estados Unidos,America/Chicago,41.9742,-87.9073
+ATL,KATL,Hartsfield-Jackson Atlanta International Airport,Atlanta,Estados Unidos,America/New_York,33.6407,-84.4277
+MIA,KMIA,Miami International Airport,Miami,Estados Unidos,America/New_York,25.7959,-80.2870
+JFK,KJFK,John F. Kennedy International Airport,Nueva York,Estados Unidos,America/New_York,40.6413,-73.7781
+BOG,SKBO,Aeropuerto Internacional El Dorado,Bogotá,Colombia,America/Bogota,4.7016,-74.1469
+LIM,SPJC,Aeropuerto Internacional Jorge Chávez,Lima,Perú,America/Lima,-12.0219,-77.1143
+GRU,SBGR,Aeroporto Internacional de São Paulo/Guarulhos,São Paulo,Brasil,America/Sao_Paulo,-23.4356,-46.4731
+SCL,SCEL,Aeropuerto Internacional Arturo Merino Benítez,Santiago,Chile,America/Santiago,-33.3930,-70.7858
+PTY,MPTO,Aeropuerto Internacional de Tocumen,Ciudad de Panamá,Panamá,America/Panama,9.0714,-79.3835
+SJO,MROC,Aeropuerto Internacional Juan Santamaría,San José,Costa Rica,America/Costa_Rica,9.9939,-84.2088
+HAV,MUHA,Aeropuerto Internacional José Martí,La Habana,Cuba,America/Havana,22.9892,-82.4091
+SDQ,MDSD,Aeropuerto Internacional de Las Américas,Santo Domingo,República Dominicana,America/Santo_Domingo,18.4297,-69.6689

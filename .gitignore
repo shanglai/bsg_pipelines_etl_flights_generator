@@ -1,0 +1,14 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+entregas/*
+!entregas/.gitkeep
+secretos/
+*.duckdb
+*.duckdb.wal
+validacion/salidas/
+.env.*
+!.env.example

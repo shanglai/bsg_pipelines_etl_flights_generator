@@ -1,0 +1,53 @@
+# Sobreposición para el modo SERVIDOR (varios equipos, mismos datos, MySQL con TLS).
+#   docker compose -f compose.yaml -f compose.servidor.yaml up -d
+#   docker compose -f compose.yaml -f compose.servidor.yaml exec generador sim equipos aplicar
+#   docker compose -f compose.yaml -f compose.servidor.yaml up -d --force-recreate sftp
+x-sim-servidor: &sim-servidor
+  SIM_MODO: servidor
+  SIM_FACTOR: "1"
+  MYSQL_TLS: "1"
+
+services:
+  mysql:
+    command:
+      - --innodb-buffer-pool-size=256M
+      - --innodb-redo-log-capacity=134217728
+      - --innodb-log-buffer-size=8M
+      - --performance-schema=OFF
+      - --mysqlx=OFF
+      - --max-connections=120
+      - --table-open-cache=400
+      - --tmp-table-size=16M
+      - --max-heap-table-size=16M
+      - --skip-name-resolve
+      - --server-id=1
+      - --log-bin=binlog
+      - --binlog-expire-logs-seconds=259200
+      - --binlog-ignore-db=simulador
+      - --gtid-mode=ON
+      - --enforce-gtid-consistency=ON
+      - --character-set-server=utf8mb4
+      - --require-secure-transport=ON
+      - --tls-version=TLSv1.2,TLSv1.3
+    ports: !override
+      - "3306:3306"
+
+  generador:
+    environment:
+      <<: *sim-servidor
+
+  api:
+    environment:
+      <<: *sim-servidor
+    ports: !override
+      - "8000:8000"
+
+  sftp:
+    # Los usuarios salen de `sim equipos aplicar` (archivo en el volumen sftp-conf).
+    command: !reset []
+    ports: !override
+      - "2222:22"
+    volumes:
+      - sftp-datos:/home
+      - sftp-llaves:/llaves
+      - sftp-conf:/etc/sftp:ro
