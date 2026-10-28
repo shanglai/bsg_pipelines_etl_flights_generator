@@ -62,6 +62,7 @@ def main() -> None:
     ap.add_argument("--alumno", default="alumno-local-123")
     ap.add_argument("--monitor")
     ap.add_argument("--salida", required=True)
+    ap.add_argument("--rapido", action="store_true", help="omite releer la API completa (útil en corridas largas)")
     a = ap.parse_args()
     os.environ.setdefault("SIM_MODO", "local")
     cfg = config.cargar(modo="local")
@@ -132,7 +133,7 @@ def main() -> None:
 
     # ---------------------------------------------------------------- 2) API observada
     st = Counter()
-    evs = leer_api(a.api, a.llave, st)
+    evs = [] if a.rapido else leer_api(a.api, a.llave, st)
     ids = Counter(e["id_evento"] for e in evs)
     visto_asig = set()
     invertidos = 0

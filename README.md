@@ -105,6 +105,12 @@ docker compose exec generador sim calificar --entrega /entregas/equipo01.duckdb
 └── despliegue/README.md         VM e2-small en GCP (solo documentación)
 ```
 
+## Ajustes por variables de entorno
+
+En `.env`: `SIM_FACTOR` (velocidad del reloj), `SIM_ERRORES=limpio` (sin errores de datos ni llegadas tarde ni
+cambios programados) y `SIM_CONFIG_EXTRA`, un fragmento JSON que se sobrepone a `config/simulador.yaml`, por ejemplo
+`SIM_CONFIG_EXTRA={"latencia": {"sftp": {"cada": 60}}}` para archivos SFTP cada minuto.
+
 ## Pruebas
 
 ```bash

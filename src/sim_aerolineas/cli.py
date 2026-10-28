@@ -84,7 +84,8 @@ def main(argv: list[str] | None = None) -> None:
     if args.cmd == "api":
         import uvicorn
         uvicorn.run("sim_aerolineas.api.app:app", host="0.0.0.0", port=args.puerto, workers=1,
-                    log_level=os.environ.get("SIM_LOG", "info").lower(), access_log=False)
+                    log_level=os.environ.get("SIM_LOG", "info").lower(), access_log=False,
+                    timeout_keep_alive=65)   # evita cortes de conexiones reutilizadas tras unos segundos ociosas
         return
 
     from . import bd, config, incidentes

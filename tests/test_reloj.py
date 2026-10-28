@@ -14,3 +14,12 @@ def test_config_extra_por_entorno(monkeypatch):
     cfg = config.cargar(modo="local")
     assert cfg["latencia"]["sftp"]["cada"] == 60
     assert cfg["latencia"]["api"]["min"] == 2      # lo demás no cambia
+
+
+def test_reanclar_congela_el_apagado():
+    from sim_aerolineas.reloj import reanclar
+    r = Reloj(inicio_real=1000.0, inicio_sim=0.0, factor=60)
+    sim_al_apagar = r.sim(2000)               # último latido en t=2000
+    nuevo = reanclar(r, ultimo_latido=2000, ahora=2000 + 8 * 3600)
+    assert abs(nuevo.sim(2000 + 8 * 3600) - sim_al_apagar) < 1e-6
+    assert reanclar(r, ultimo_latido=2000, ahora=2060) is r     # reinicio corto: no cambia

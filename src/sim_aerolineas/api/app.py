@@ -61,8 +61,10 @@ def _cfg() -> dict:
 
 
 def _reloj():
-    if _estado["reloj"] is None:
+    # Se relee cada 30 s: el generador puede re-anclarlo al volver de un apagado.
+    if _estado["reloj"] is None or time.time() - _estado.get("reloj_leido", 0) > 30:
         _estado["reloj"] = obtener_reloj(_cn(), _cfg())
+        _estado["reloj_leido"] = time.time()
     return _estado["reloj"]
 
 

@@ -62,7 +62,7 @@ def main() -> None:
             numero = (numero // 10 + 1) * 10  # bloque nuevo por par de rutas
     destino = RAIZ / "datos/rutas.csv"
     with destino.open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=list(filas[0].keys()))
+        w = csv.DictWriter(f, fieldnames=list(filas[0].keys()), lineterminator="\n")
         w.writeheader()
         w.writerows(filas)
     print(f"{len(filas)} vuelos diarios programados -> {destino}")

@@ -37,6 +37,18 @@ class Reloj:
         return (self.sim(real) - self.inicio_sim) / 3600
 
 
+def reanclar(r: Reloj, ultimo_latido: float, ahora: float, tolerancia_s: float = 120) -> Reloj:
+    """Congela el reloj mientras el simulador estuvo apagado.
+
+    Si el último latido del generador es más viejo que `tolerancia_s`, recorre el inicio real
+    lo que duró el apagado: el tiempo simulado continúa donde se quedó en vez de saltar.
+    """
+    hueco = ahora - ultimo_latido
+    if ultimo_latido <= 0 or hueco <= tolerancia_s:
+        return r
+    return Reloj(r.inicio_real + hueco, r.inicio_sim, r.factor)
+
+
 def iso_utc(ts: float) -> str:
     return datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 

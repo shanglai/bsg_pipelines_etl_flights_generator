@@ -11,6 +11,9 @@ reloj:
   # inicio_simulado - precarga_horas y ese atraso se publica de golpe al inicio.
   # Sirve para que desde el primer minuto haya vuelos en todos los estados.
   precarga_horas: 48
+  # Si el simulador estuvo apagado (docker compose stop, laptop cerrada), el reloj simulado
+  # continúa donde se quedó en vez de saltar y generar de golpe todo lo que "pasó".
+  pausar_si_apagado: true
 
 volumen:
   # Fracción de los vuelos programados (datos/rutas.csv) que opera cada día (0 a 1).
@@ -66,3 +69,4 @@ modos:
     reloj:
       inicio_simulado: ahora
       factor: 1
+      pausar_si_apagado: false   # en el servidor el reloj simulado es la hora real

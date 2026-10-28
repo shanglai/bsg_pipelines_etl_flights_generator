@@ -24,7 +24,7 @@ import pymysql
 
 from . import bd, catalogo, config, formatos, incidentes, plan
 from .azar import u
-from .reloj import Reloj, dt_utc, parsear_inicio
+from .reloj import Reloj, dt_utc, parsear_inicio, reanclar
 
 log = logging.getLogger("generador")
 CANAL_A_FUENTE = {"api": "A", "sftp": "B", "mysql": "C"}
@@ -88,6 +88,7 @@ class Generador:
         self.cn_c = bd.conectar(binlog=True)      # fuente C: sí va al binlog (CDC)
         bd.crear_esquemas(self.cn, self.cn_c)
         self.reloj = obtener_reloj(self.cn, self.cfg, crear=True)
+        self._congelar_si_estuvo_apagado()
         self.fuente = {c: CANAL_A_FUENTE[a.canal] for c, a in self.cat.aerolineas.items()}
         self.codigo_por_fuente = {v: k for k, v in self.fuente.items()}
         self.origen_por_numero = {vp.numero_vuelo: vp.origen for vp in self.cat.programados}
@@ -106,6 +107,20 @@ class Generador:
         self._mantenimiento(time.time())
 
     # ------------------------------------------------------------------ arranque
+    def _congelar_si_estuvo_apagado(self) -> None:
+        if not self.cfg["reloj"].get("pausar_si_apagado", False):
+            return
+        latido = float(bd.leer_estado(self.cn, "latido", "0"))
+        nuevo = reanclar(self.reloj, latido, time.time())
+        if nuevo is not self.reloj:
+            with self.cn.cursor() as cur:
+                cur.execute("UPDATE simulador.reloj SET inicio_real=%s WHERE id=1", (nuevo.inicio_real,))
+            self.cn.commit()
+            log.info("reloj congelado durante el apagado", extra={"datos": {
+                "apagado_s": round(time.time() - latido), "sim_continua_en":
+                datetime.fromtimestamp(nuevo.ahora_sim(), tz=timezone.utc).isoformat(timespec="seconds")}})
+            self.reloj = nuevo
+
     def _cargar_estado(self) -> None:
         hoy = datetime.fromtimestamp(self.reloj.ahora_sim(), tz=timezone.utc).date()
         with self.cn.cursor() as cur:

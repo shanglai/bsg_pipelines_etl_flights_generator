@@ -70,4 +70,12 @@ def aplicar(cn, archivo: Path, secretos: Path, sftp_conf: Path, uid_inicial: int
     sftp_conf.write_text("\n".join(locales + [f"{r['sftp_usuario']}:{r['sftp_contrasena']}:{r['sftp_uid']}"
                                               for r in filas]) + "\n", encoding="utf-8")
     os.chmod(sftp_conf, 0o600)
+    # Carpeta de cada equipo (root, 755: solo lectura para el equipo). El generador le enlaza los archivos.
+    base = Path(os.environ.get("SFTP_DIR", "/datos/sftp"))
+    if base.is_dir():
+        for r in filas:
+            d = base / r["sftp_usuario"] / "salida"
+            d.mkdir(parents=True, exist_ok=True)
+            os.chmod(d.parent, 0o755)
+            os.chmod(d, 0o755)
     return filas

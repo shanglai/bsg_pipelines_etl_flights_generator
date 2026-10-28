@@ -20,7 +20,7 @@ inyectan exactamente los mismos errores.
 | API | Cambio de esquema v1 -> v2 | programado (hora simulada 96) | - | `pasajero` -> `id_pasajero`, nuevo `canal_venta`; convivencia 12 h simuladas | incidente `cambio_esquema_api` |
 | SFTP | Archivo truncado | 3 % | archivo | queda con su nombre final cortado a la mitad de una línea; la versión completa llega 10 a 40 min después con el mismo nombre | `archivo_truncado` |
 | SFTP | Reenvío corregido | 5 % | archivo | primera versión sin 1 a 3 filas; la corregida llega 10 a 40 min después con el mismo nombre | `reenvio_corregido` |
-| SFTP | Windows-1252 | 15 % | archivo | acentos (Mérida, São Paulo) ilegibles como UTF-8; fin de línea CRLF | `formato_distinto` |
+| SFTP | Windows-1252 | 15 % | archivo | acentos (Mérida, São Paulo) ilegibles como UTF-8; fin de línea CRLF. Solo los archivos de vuelos tienen acentos: uno de asientos en cp1252 es ASCII puro y se lee bien como UTF-8 | `formato_distinto` |
 | SFTP | Punto y coma | 15 % | archivo | separador `;` | `formato_distinto` |
 | SFTP | Archivo tarde | 5 % | ventana | los dos archivos llegan 30 a 60 min tarde | `archivo_tarde` |
 | SFTP | Archivo temporal visible | siempre | archivo | `.csv.tmp` a medio escribir durante 3 a 15 s | - |
